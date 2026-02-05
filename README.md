@@ -60,6 +60,7 @@ AutoWare-Fleet-Sim/
 #### 1. Backend (Simulation Engine)
 The backend handles the physics loop and pathfinding logic.
 
+```
 cd server
 
 # Create and activate virtual environment
@@ -71,12 +72,14 @@ pip install -r requirements.txt
 
 # Start the server
 python3 app.py
+```
 
-Server runs on http://127.0.0.1:5001
+*Server runs on `http://127.0.0.1:5001`*
 
 #### 2. Frontend (Dashboard)
 The frontend visualizes the fleet and handles user interaction.
 
+```
 cd client
 
 # Install Node modules
@@ -84,21 +87,21 @@ npm install
 
 # Start the development server
 npm run dev
+```
+*Client runs on `http://localhost:5173`*
 
-Client runs on http://localhost:5173
+---
 
 ### 📊 System Architecture
 
-#### The Tick Loop: The frontend polls the backend every 1000ms (1 tick).
+* **The Tick Loop:** The frontend polls the backend every **1000ms** (1 tick).
+* **State Update:** The `WarehouseSimulation` class updates robot coordinates based on the A* path plan.
+* **Conflict Resolution:** If a path is blocked by a user (God Mode) or another robot, the agent halts and recalculates a new route in the next tick.
+* **Async Logging:** A separate thread captures the fleet state and pushes a JSON log to **AWS S3**, ensuring the simulation never stutters due to network latency.
 
-#### State Update: The WarehouseSimulation class updates robot coordinates based on the A* path plan.
-
-#### Conflict Resolution: If a path is blocked by a user (God Mode) or another robot, the agent halts and recalculates a new route in the next tick.
-
-#### Async Logging: A separate thread captures the fleet state and pushes a JSON log to AWS S3, ensuring the simulation never stutters due to network latency.
+---
 
 ### 🛡️ Security Note
 
-#### No Hardcoded Keys: This project strictly follows security best practices. AWS credentials (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY) are loaded from the environment or local AWS configuration, ensuring no secrets are exposed in the source code.
-
-#### Git History: The repository history has been sanitized to ensure no sensitive configuration files (.env, venv) were accidentally committed.
+* **No Hardcoded Keys:** This project strictly follows security best practices. AWS credentials (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`) are loaded from the environment or local AWS configuration, ensuring no secrets are exposed in the source code.
+* **Git History:** The repository history has been sanitized to ensure no sensitive configuration files (`.env`, `venv`) were accidentally committed.
